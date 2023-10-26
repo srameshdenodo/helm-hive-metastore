@@ -5,9 +5,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG HADOOP_VERSION=3.2.0
 
 RUN apt-get update && \
-    apt-get install -y curl=7.64.0-4+deb10u1 --no-install-recommends && \
+    apt-get install -y curl --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
 
 # Install Gomplate
 RUN curl -sfSL https://github.com/hairyhenderson/gomplate/releases/download/v3.6.0/gomplate_linux-amd64 \

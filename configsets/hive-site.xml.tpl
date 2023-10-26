@@ -1,0 +1,18 @@
+<configuration>
+        <property>
+          <name>fs.s3a.access.key</name>
+          <value>presto</value>
+        </property>
+        <property>
+          <name>fs.s3a.secret.key</name>
+          <value>presto00</value>
+        </property>
+        <property>
+          <name>fs.s3a.endpoint</name>
+          <value>http://minio:9000</value>
+        </property>
+        <property>
+          <name>fs.s3a.path.style.access</name>
+          <value>true</value>
+        </property>
+</configuration>
