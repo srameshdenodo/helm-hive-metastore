@@ -1,5 +1,19 @@
 ---
+## You can override the default chart name (i.e., .Charts.name) when desired using the following parameter.
+## This is the only way to have more than one deployment of this
+nameOverride: null
+
+## Number of Hive Metastore instances.
+## Following the documentation, given Hive Metastore is stateless we could have more than one instance.
+## https://cwiki.apache.org/confluence/display/Hive/AdminManual+Metastore+Administration
 replicaCount: 1
+
+## Default Hive image and tag. Please build image locally before applying this.
+image:
+  name: hive-metastore
+  tag: latest
+  pullPolicy: IfNotPresent
+
 
 env:
   HIVE_DB_EXTERNAL: "true"
@@ -9,12 +23,27 @@ env:
   HIVE_DB_PASS: hive
   HIVE_CONF_PARAMS: fs.s3a.path.style.access=true;fs.s3a.endpoint=http://minio:9000;fs.s3a.access.key=presto;fs.s3a.secret.key=presto00
 
-service:
-  type: clusterIP
+## Resource requests and limits: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+resources:
+  limits:
+    cpu: 2
+    memory: 2Gi
+  requests:
+    cpu: 2
+    memory: 2Gi
 
+service:
+  type: ClusterIP
+  ports:
+    - name: thrift
+      port: 9083
+      targetPort: 9083
+      protocol: TCP
+
+## Auto-scaling (hpa) configuration
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 1
   maxReplicas: 2
-  targetCPUUtilizationPercentage: 75
-  targetMemoryUtilizationPercentage: 75
+  targetCPUUtilizationPercentage: 90
+  targetMemoryUtilizationPercentage: 90
